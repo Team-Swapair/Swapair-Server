@@ -28,5 +28,5 @@ public class WantGoods {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postId", insertable = false, updatable=false)
-    private Post postId;
+    private Post post;
 }
