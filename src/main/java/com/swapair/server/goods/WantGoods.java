@@ -22,11 +22,11 @@ public class WantGoods {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goodsId", insertable = false, updatable=false)
+    @JoinColumn(name = "goods", insertable = false, updatable=false)
     private Goods goods;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId", insertable = false, updatable=false)
-    private Post postId;
+    @JoinColumn(name = "post", insertable = false, updatable=false)
+    private Post post;
 }
