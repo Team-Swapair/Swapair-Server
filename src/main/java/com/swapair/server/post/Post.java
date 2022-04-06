@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swapair.server.category.Category;
 import com.swapair.server.goods.HaveGoods;
 import com.swapair.server.goods.WantGoods;
+import com.swapair.server.user.User;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,10 +26,10 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "userId", insertable = false, updatable=false)
-//    private User user;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", insertable = false, updatable=false)
+    private User user;
 
     @Column(nullable = false)
     private String postTitle;
