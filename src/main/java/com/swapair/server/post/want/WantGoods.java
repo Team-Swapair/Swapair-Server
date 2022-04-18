@@ -1,6 +1,8 @@
-package com.swapair.server.goods;
+package com.swapair.server.post.want;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swapair.server.category.Category;
+import com.swapair.server.goods.Goods;
 import com.swapair.server.post.Post;
 import lombok.*;
 
@@ -12,20 +14,20 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="haveGoods")
-public class HaveGoods {
+@Table(name="wantGoods")
+public class WantGoods {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long haveId;
+    private Long wantId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goods", insertable = false, updatable=false)
+    @JoinColumn(name = "goodsId", insertable = false, updatable=false)
     private Goods goods;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post", insertable = false, updatable=false)
+    @JoinColumn(name = "postId", insertable = false, updatable=false)
     private Post post;
-
 }
