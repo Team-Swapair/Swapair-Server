@@ -1,7 +1,8 @@
 package com.swapair.server.goods;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.swapair.server.post.Post;
+import com.swapair.server.post.have.HaveGoods;
+import com.swapair.server.post.want.WantGoods;
 import lombok.*;
 
 import javax.persistence.*;
