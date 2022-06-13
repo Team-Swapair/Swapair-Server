@@ -14,9 +14,6 @@ public interface PostSearchMapping {
     List<WantGoods> getWantGoodsList();
     List<HaveGoods> getHaveGoodsList();
 
-    interface WantGoods{
-        String getTeamName();
-    }
 
 }
 
