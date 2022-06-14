@@ -1,25 +1,23 @@
 package com.swapair.server.user;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import com.swapair.server.post.Post;
+import com.swapair.server.post.params.PostProfileParams;
+import com.swapair.server.user.params.UserSignInParams;
+import com.swapair.server.user.params.UserSignUpParams;
 
-import javax.transaction.Transactional;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Slf4j
-@Service
-@Transactional
-@RequiredArgsConstructor
-public class UserService {
-    private final UserRepository userRepository;
+public interface UserService {
+    void createUser(UserSignUpParams userSignUpParams);
 
-    public void createUser(UserParams userParam) {
-        User user = new User();
-        user.setEmail(userParam.getEmail());
-        user.setCreatedAt(LocalDateTime.now());
+    User getUser(Long userId);
 
-        userRepository.save(user);
-    }
+    Boolean checkDuplicateEmail(String email);
+
+    Long logIn(UserSignInParams userSignInParams);
+
+    Boolean checkDuplicatePhoneNumber(String phoneNumber);
+
+    List<PostProfileParams> getMyPosts(Long userId);
 }
 

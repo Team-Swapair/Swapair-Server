@@ -26,12 +26,23 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String phoneNumber;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Post> myPosts = new ArrayList<>();
 
     @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
+
+    @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime updatedAt;
 }

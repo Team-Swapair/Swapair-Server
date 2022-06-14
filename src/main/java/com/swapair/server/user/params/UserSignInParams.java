@@ -1,4 +1,4 @@
-package com.swapair.server.user;
+package com.swapair.server.user.params;
 
 import lombok.*;
 
@@ -7,6 +7,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserParams {
+public class UserSignInParams {
     private String email;
+    private String password;
 }
