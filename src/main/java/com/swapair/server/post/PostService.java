@@ -1,16 +1,19 @@
 package com.swapair.server.post;
 
+import com.swapair.server.post.params.PostDetailParams;
+import com.swapair.server.post.params.PostSearchParams;
+
 import java.util.List;
 
 public interface PostService {
     void createPost(Post post);
 
-    List<Post> getAllPosts();
+    List<PostSearchParams> getAllPosts();
 
-    Post getPost(Long postId);
+    PostDetailParams getPost(Long postId);
 
     List<Post> getMyPosts(Long userId);
 
-    List<Post> searchPosts(Long categoryId, String searchKey, Filter filter);
+    List<PostSearchParams> searchPosts(Long categoryId, String searchKey, Filter filter);
 
 }
