@@ -145,7 +145,7 @@ public class PostServiceImpl implements PostService{
 
         List<Long> categoryIds = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
-        if(categoryId != null){
+        if(categoryId != 0){
             categoryIds = categoryRepository.findTargetChildIds(categoryId);
             categoryIds.add(categoryId);
             postList = postRepository.findByIdsAndPostCategory(postIds, categoryIds);
