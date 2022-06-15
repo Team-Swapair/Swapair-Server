@@ -1,0 +1,7 @@
+test case : 378
+return standard = 2
+distance standard = 30
+correctness = 350
+correctness rate = 0.9259259259259259
+다른데 똑같다고 판단 = 14
+똑같은데 다르다고 판단 = 14
