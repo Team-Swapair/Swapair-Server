@@ -24,7 +24,7 @@ public class UserController {
 
     @ApiOperation(value = "사용자 정보 입력", notes = "사용자 정보를 입력한다")
     @PostMapping(value = "user")
-    public void createUser(@RequestBody UserSignUpParams userSignUpParams) { userService.createUser(userSignUpParams); }
+    public User createUser(@RequestBody UserSignUpParams userSignUpParams) { return userService.createUser(userSignUpParams); }
 
     @ApiOperation(value = "사용자 조회", notes = "사용자 id로 사용자의 모든 정보를 조회한다")
     @GetMapping(value = "user/{userId}")
