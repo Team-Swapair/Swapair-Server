@@ -4,11 +4,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.aspectj.weaver.ast.Test;
 import org.opencv.core.*;
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.ORB;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,13 +18,14 @@ import java.util.List;
 // 테스트 자동화는 엑셀로 값비교 예정
 //회색이미지로도 비교해보자
 
-class TestParams {
+class TestParams2 {
     public String from;
     public String to;
     public Boolean label;
+
 }
 
-public class FeatureDetect {
+public class FeatureDetect2 {
 
     public static List<TestParams> readExcelParams(String filename){
         List<TestParams> params = new ArrayList<>();
@@ -174,8 +175,11 @@ public class FeatureDetect {
 //        Mat img1 = Imgcodecs.imread(filename1, Imgcodecs.IMREAD_REDUCED_GRAYSCALE_8);
 //        Mat img2 = Imgcodecs.imread(filename2, Imgcodecs.IMREAD_REDUCED_GRAYSCALE_8);
 
-        Mat img2 = Imgcodecs.imread(filename2, Imgcodecs.IMREAD_COLOR);
-        Mat img1 = Imgcodecs.imread(filename1, Imgcodecs.IMREAD_COLOR);
+        Mat img2 = Imgcodecs.imread(filename2, Imgproc.COLOR_BGR2GRAY);
+        Mat img1 = Imgcodecs.imread(filename1, Imgproc.COLOR_BGR2GRAY);
+
+
+
 
         //Declare key point of images
         MatOfKeyPoint keyPoints1 = new MatOfKeyPoint();
