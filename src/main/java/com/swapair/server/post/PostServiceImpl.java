@@ -9,6 +9,7 @@ import com.swapair.server.post.params.PostDetailParams;
 import com.swapair.server.post.params.PostSearchParams;
 import com.swapair.server.post.want.WantGoods;
 import com.swapair.server.post.want.WantGoodsRepository;
+import com.swapair.server.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class PostServiceImpl implements PostService{
     private final HaveGoodsRepository haveGoodsRepository;
     private final WantGoodsRepository wantGoodsRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void createPost(Post post) {
@@ -145,7 +147,7 @@ public class PostServiceImpl implements PostService{
 
         List<Long> categoryIds = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
-        if(categoryId != null){
+        if(categoryId != null && !categoryId.equals(0)){
             categoryIds = categoryRepository.findTargetChildIds(categoryId);
             categoryIds.add(categoryId);
             postList = postRepository.findByIdsAndPostCategory(postIds, categoryIds);
