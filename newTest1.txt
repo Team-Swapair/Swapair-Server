@@ -1,0 +1,5 @@
+test case : 21
+return standard = 2
+distance standard = 50
+correctness = 6
+correctness rate = 0.2857142857142857

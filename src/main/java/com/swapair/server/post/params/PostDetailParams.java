@@ -1,5 +1,6 @@
 package com.swapair.server.post.params;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swapair.server.goods.GoodsParams;
 import com.swapair.server.user.User;
 import lombok.*;
@@ -16,6 +17,7 @@ import java.util.List;
 public class PostDetailParams {
     private Long postId;
 
+    @JsonIgnore
     private User user;
 
     private String postTitle;
