@@ -28,7 +28,7 @@ public class Post {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", insertable = false, updatable=false)
+    @JoinColumn(name = "userId")
     private User user;
 
     @Column(nullable = false)
@@ -39,7 +39,7 @@ public class Post {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryId", insertable = false, updatable=false)
+    @JoinColumn(name = "categoryId")
     private Category postCategory;
 
     @Column
@@ -65,11 +65,11 @@ public class Post {
     private LocalDateTime updateAt;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<WantGoods> wantGoodsList = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<HaveGoods> haveGoodsList = new ArrayList<>();
 
 }

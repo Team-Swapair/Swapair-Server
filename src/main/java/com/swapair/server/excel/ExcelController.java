@@ -82,7 +82,7 @@ public class ExcelController {
             LocalDateTime to = LocalDateTime.parse(row.getCell(9).getStringCellValue(), formatter);
             data.setCreatedAt(to);
 
-            postService.createPost(data);
+            postService.createExcelPost(data);
         }
         System.out.println("엑셀 완료");
         return "excel";
