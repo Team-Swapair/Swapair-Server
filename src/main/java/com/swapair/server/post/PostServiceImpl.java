@@ -1,6 +1,5 @@
 package com.swapair.server.post;
 
-import com.swapair.server.category.Category;
 import com.swapair.server.category.CategoryRepository;
 import com.swapair.server.goods.GoodsParams;
 import com.swapair.server.goods.GoodsRepository;
@@ -8,11 +7,9 @@ import com.swapair.server.post.have.HaveGoods;
 import com.swapair.server.post.have.HaveGoodsRepository;
 import com.swapair.server.post.params.PostDetailParams;
 import com.swapair.server.post.params.PostSearchParams;
-import com.swapair.server.post.params.PostWriteParams;
 import com.swapair.server.post.params.PostWriteParams2;
 import com.swapair.server.post.want.WantGoods;
 import com.swapair.server.post.want.WantGoodsRepository;
-import com.swapair.server.user.User;
 import com.swapair.server.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
