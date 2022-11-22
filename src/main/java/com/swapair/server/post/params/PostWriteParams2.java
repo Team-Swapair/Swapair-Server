@@ -17,6 +17,8 @@ import java.util.List;
 public class PostWriteParams2 {
     private Long postId;
 
+    private Long userId;
+
     private String postTitle;
 
     private String postContent;
