@@ -47,7 +47,7 @@ public class PostServiceImpl implements PostService{
                         .postCategory(categoryRepository.findById(post.getPostCategory()).orElseThrow(IllegalAccessError::new))
                         .wantImage(post.getWantImage())
                         .haveImage(post.getHaveImage())
-                        .user(userRepository.findByUserId(1L))
+                        .user(userRepository.findByUserId(post.getUserId()))
                         .createdAt(LocalDateTime.now())
                         .isChecked(true)
                         .isClosed(false)

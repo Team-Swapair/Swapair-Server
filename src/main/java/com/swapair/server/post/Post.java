@@ -7,6 +7,7 @@ import com.swapair.server.post.have.HaveGoods;
 import com.swapair.server.post.want.WantGoods;
 import com.swapair.server.user.User;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -64,12 +65,14 @@ public class Post {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updateAt;
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+    @BatchSize(size = 10)
     private List<WantGoods> wantGoodsList = new ArrayList<>();
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+    @BatchSize(size = 10)
     private List<HaveGoods> haveGoodsList = new ArrayList<>();
 
 }
