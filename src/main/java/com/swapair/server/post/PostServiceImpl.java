@@ -7,6 +7,7 @@ import com.swapair.server.post.have.HaveGoods;
 import com.swapair.server.post.have.HaveGoodsRepository;
 import com.swapair.server.post.params.PostDetailParams;
 import com.swapair.server.post.params.PostSearchParams;
+import com.swapair.server.post.params.PostWriteParams2;
 import com.swapair.server.post.want.WantGoods;
 import com.swapair.server.post.want.WantGoodsRepository;
 import com.swapair.server.user.UserRepository;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +33,39 @@ public class PostServiceImpl implements PostService{
     private final UserRepository userRepository;
 
     @Override
-    public void createPost(Post post) {
+    public void createExcelPost(Post post) {
 
         postRepository.save(post);
+
+    }
+    @Override
+    public Long createPost(PostWriteParams2 post) {
+
+        Post post1 = Post.builder()
+                        .postTitle(post.getPostTitle())
+                        .postContent(post.getPostContent())
+                        .postCategory(categoryRepository.findById(post.getPostCategory()).orElseThrow(IllegalAccessError::new))
+                        .wantImage(post.getWantImage())
+                        .haveImage(post.getHaveImage())
+                        .user(userRepository.findByUserId(post.getUserId()))
+                        .createdAt(LocalDateTime.now())
+                        .isChecked(true)
+                        .isClosed(false)
+                        .build();
+        Long id = postRepository.save(post1).getPostId();
+        List<Long> havaGoodsList = post.getHaveGoodsList();
+        for (Long l : havaGoodsList) {
+            HaveGoods hg = HaveGoods.builder().goods(goodsRepository.findById(l).orElseThrow(IllegalAccessError::new))
+                    .post(post1).build();
+            haveGoodsRepository.save(hg);
+        }
+        List<Long> wantGoodsList = post.getWantGoodsList();
+        for (Long l : wantGoodsList) {
+            WantGoods wg = WantGoods.builder().goods(goodsRepository.findById(l).orElseThrow(IllegalAccessError::new))
+                    .post(post1).build();
+            wantGoodsRepository.save(wg);
+        }
+        return id;
 
     }
 

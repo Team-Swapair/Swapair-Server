@@ -2,6 +2,7 @@ package com.swapair.server.post;
 
 import com.swapair.server.post.params.PostDetailParams;
 import com.swapair.server.post.params.PostSearchParams;
+import com.swapair.server.post.params.PostWriteParams2;
 import com.swapair.server.post.params.SearchKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,5 +37,13 @@ public class PostController {
         return postService.searchPosts(searchKey.getCategoryId(), searchKey.getKeyword(), searchKey.getFilter());
     }
 
+    @ApiOperation(value = "게시물 작성", notes = "게시물은 저장한다.")
+    @PostMapping(value = "post/postwrite")
+    public Long createPost(@RequestBody PostWriteParams2 postWriteParams2){
+        return postService.createPost(postWriteParams2);
+    }
 
+    @ApiOperation(value = "임시 api", notes = "캡챠용 임시")
+    @GetMapping(value = "tmps")
+    public boolean getCaptcha(){ return true; }
 }

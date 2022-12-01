@@ -14,4 +14,6 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     @Query("SELECT g.goodsId from Goods g")
     List<Long> findAllIds();
+
+    Goods findByGoodsId(@Param("goodsId") Long goodsId);
 }

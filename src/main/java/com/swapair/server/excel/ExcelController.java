@@ -1,8 +1,14 @@
 package com.swapair.server.excel;
 
 import com.swapair.server.category.CategoryService;
+import com.swapair.server.goods.GoodsRepository;
 import com.swapair.server.post.Post;
+import com.swapair.server.post.PostRepository;
 import com.swapair.server.post.PostService;
+import com.swapair.server.post.have.HaveGoods;
+import com.swapair.server.post.have.HaveGoodsRepository;
+import com.swapair.server.post.want.WantGoods;
+import com.swapair.server.post.want.WantGoodsRepository;
 import com.swapair.server.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -30,6 +36,10 @@ public class ExcelController {
     private final PostService postService;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final GoodsRepository goodsRepository;
+    private final PostRepository postRepository;
+    private final HaveGoodsRepository haveGoodsRepository;
+    private final WantGoodsRepository wantGoodsRepository;
 
 
     @GetMapping("/excel")
@@ -38,7 +48,7 @@ public class ExcelController {
     }
 
     @PostMapping("/excel/post/read")
-    public String readAreaExcel(@RequestParam("file") MultipartFile file, Model model)
+    public String readPostExcel(@RequestParam("file") MultipartFile file, Model model)
             throws IOException {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (!extension.equals("xlsx") && !extension.equals("xls")) {
@@ -60,6 +70,7 @@ public class ExcelController {
             if (row.getCell(0) == null) {
                 break;
             }
+            data.setPostId((long) row.getCell(0).getNumericCellValue());
             Long userId = (long) row.getCell(1).getNumericCellValue();
             data.setUser(userService.getUser(userId));
             data.setPostTitle(row.getCell(2).getStringCellValue());
@@ -78,11 +89,79 @@ public class ExcelController {
             else
                 data.setIsChecked(false);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern ("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime to = LocalDateTime.parse(row.getCell(9).getStringCellValue(), formatter);
-            data.setCreatedAt(to);
+            data.setCreatedAt(LocalDateTime.now());
 
-            postService.createPost(data);
+            postService.createExcelPost(data);
+        }
+        System.out.println("엑셀 완료");
+        return "excel";
+    }
+
+    @PostMapping("/excel/have/read")
+    public String readHaveExcel(@RequestParam("file") MultipartFile file, Model model)
+            throws IOException {
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (!extension.equals("xlsx") && !extension.equals("xls")) {
+            throw new IOException("엑셀파일만 업로드 해주세요.");
+        }
+        Workbook workbook = null;
+
+        if (extension.equals("xlsx")) {
+            workbook = new XSSFWorkbook(file.getInputStream());
+        } else if (extension.equals("xls")) {
+            workbook = new HSSFWorkbook(file.getInputStream());
+        }
+
+        Sheet worksheet = workbook.getSheetAt(0);
+        for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
+            Row row = worksheet.getRow(i);
+            HaveGoods data = new HaveGoods();
+
+            if (row.getCell(0) == null) {
+                break;
+            }
+            Long goodsId = (long) row.getCell(1).getNumericCellValue();
+            data.setGoods(goodsRepository.findByGoodsId(goodsId));
+            goodsId = (long) row.getCell(2).getNumericCellValue();
+            data.setPost(postRepository.findById(goodsId).orElseThrow());
+
+            haveGoodsRepository.save(data);
+
+        }
+        System.out.println("엑셀 완료");
+        return "excel";
+    }
+
+    @PostMapping("/excel/want/read")
+    public String readWantExcel(@RequestParam("file") MultipartFile file, Model model)
+            throws IOException {
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (!extension.equals("xlsx") && !extension.equals("xls")) {
+            throw new IOException("엑셀파일만 업로드 해주세요.");
+        }
+        Workbook workbook = null;
+
+        if (extension.equals("xlsx")) {
+            workbook = new XSSFWorkbook(file.getInputStream());
+        } else if (extension.equals("xls")) {
+            workbook = new HSSFWorkbook(file.getInputStream());
+        }
+
+        Sheet worksheet = workbook.getSheetAt(0);
+        for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
+            Row row = worksheet.getRow(i);
+            WantGoods data = new WantGoods();
+
+            if (row.getCell(0) == null) {
+                break;
+            }
+            Long goodsId = (long) row.getCell(1).getNumericCellValue();
+            data.setGoods(goodsRepository.findByGoodsId(goodsId));
+            goodsId = (long) row.getCell(2).getNumericCellValue();
+            data.setPost(postRepository.findById(goodsId).orElseThrow());
+
+            wantGoodsRepository.save(data);
+
         }
         System.out.println("엑셀 완료");
         return "excel";

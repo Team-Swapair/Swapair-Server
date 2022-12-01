@@ -8,7 +8,7 @@ import com.swapair.server.user.params.UserSignUpParams;
 import java.util.List;
 
 public interface UserService {
-    void createUser(UserSignUpParams userSignUpParams);
+    User createUser(UserSignUpParams userSignUpParams);
 
     User getUser(Long userId);
 

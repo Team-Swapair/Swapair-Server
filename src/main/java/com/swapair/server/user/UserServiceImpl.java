@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     @Override
-    public void createUser(UserSignUpParams userSignUpParams){
+    public User createUser(UserSignUpParams userSignUpParams){
         User user = new User();
         user.setEmail(userSignUpParams.getEmail());
         user.setPassword(userSignUpParams.getPassword());
@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService{
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
+        return user;
     }
 
     @Override
