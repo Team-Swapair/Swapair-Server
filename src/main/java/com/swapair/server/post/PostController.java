@@ -42,7 +42,4 @@ public class PostController {
         return postService.createPost(postWriteParams2);
     }
 
-    @ApiOperation(value = "임시 api", notes = "캡챠용 임시")
-    @GetMapping(value = "tmps")
-    public boolean getCaptcha(){ return true; }
 }
