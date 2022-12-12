@@ -56,6 +56,9 @@ public class Post {
     private Boolean isChecked;
 
     @Column(nullable = false)
+    private Boolean isDoubted;
+
+    @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
