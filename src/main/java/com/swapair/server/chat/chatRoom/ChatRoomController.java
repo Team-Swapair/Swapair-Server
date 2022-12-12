@@ -27,7 +27,7 @@ public class ChatRoomController {
 
     @ApiOperation(value = "채팅방 조회", notes = "유저ID당 채팅방을 조회한다..")
     @GetMapping(value = "chatroom/{userId}")
-    public List<ChatRoom> getUserCharRooms(@PathVariable("userId") Long userId){
+    public List<ChatRoomParams> getUserCharRooms(@PathVariable("userId") Long userId){
         return chatRoomService.getUserChatRooms(userId);
     }
 }

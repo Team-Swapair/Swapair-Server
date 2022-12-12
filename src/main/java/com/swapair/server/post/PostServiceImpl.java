@@ -128,12 +128,14 @@ public class PostServiceImpl implements PostService{
             GoodsParams goodsParams = new GoodsParams();
             goodsParams.setGoodsId(hg.getGoods().getGoodsId());
             goodsParams.setGoodsName(hg.getGoods().getGoodsName());
+            goodsParams.setPrice(hg.getGoods().getGoodsPrice3());
             haveParamList.add(goodsParams);
         }
         for(WantGoods wg : p.getWantGoodsList()){
             GoodsParams goodsParams = new GoodsParams();
             goodsParams.setGoodsId(wg.getGoods().getGoodsId());
             goodsParams.setGoodsName(wg.getGoods().getGoodsName());
+            goodsParams.setPrice(wg.getGoods().getGoodsPrice3());
             wantGoodsList.add(goodsParams);
         }
         params.setHaveGoodsList(haveParamList);

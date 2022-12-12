@@ -10,4 +10,5 @@ import lombok.*;
 public class GoodsParams {
     private Long goodsId;
     private String goodsName;
+    private Long price;
 }

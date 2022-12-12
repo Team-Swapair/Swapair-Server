@@ -1,5 +1,6 @@
 package com.swapair.server.chat.chatRoom;
 
+import com.swapair.server.chat.ChatRepository;
 import com.swapair.server.post.Post;
 import com.swapair.server.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final PostRepository postRepository;
+    private final ChatRepository chatRepository;
 
     public String createRoom(Long postId) {
         String randomId = UUID.randomUUID().toString();
@@ -31,11 +33,25 @@ public class ChatRoomService {
         return randomId;
     }
 
-    public List<ChatRoom> getUserChatRooms(Long userId) {
-        List<ChatRoom> chatRoomList = new ArrayList<>();
-        List<Long> postIds = postRepository.findIdsByUser_UserId(userId);
+    public List<ChatRoomParams> getUserChatRooms(Long userId) {
+        List<ChatRoomParams> chatRoomList = new ArrayList<>();
+        List<Post> posts = postRepository.findIdsByUser_UserId(userId);
 
-        chatRoomList = chatRoomRepository.findInPostIds(postIds);
+        for (Post p : posts) {
+            List<ChatRoom> roomlist = chatRoomRepository.findByPostId(p.getPostId());
+
+            for (ChatRoom c : roomlist) {
+                List<String> message = chatRepository.findByRoomSeq(c.getRandomId());
+                chatRoomList.add(ChatRoomParams.builder()
+                        .chatRoomId(c.getChatRoomId())
+                        .randomId(c.getRandomId())
+                        .postId(p.getPostId())
+                        .haveImage(p.getHaveImage())
+                                .message(message.get(0))
+                        .postTitle(p.getPostTitle()).build());
+            }
+        }
+
 
         return chatRoomList;
 
