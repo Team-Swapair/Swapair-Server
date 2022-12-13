@@ -51,6 +51,7 @@ public class PostServiceImpl implements PostService{
                         .createdAt(LocalDateTime.now())
                         .isChecked(true)
                         .isClosed(false)
+                .isDoubted(false)
                         .build();
         Long id = postRepository.save(post1).getPostId();
         List<Long> havaGoodsList = post.getHaveGoodsList();
@@ -120,6 +121,7 @@ public class PostServiceImpl implements PostService{
                 .isChecked(p.getIsChecked())
                 .createdAt(p.getCreatedAt())
                 .updateAt(p.getUpdateAt())
+                .isDoubted(p.getIsDoubted())
                 .build();
 
         List<GoodsParams> haveParamList = new ArrayList<>();

@@ -35,11 +35,12 @@ public class ChatRoomService {
 
     public List<ChatRoomParams> getUserChatRooms(Long userId) {
         List<ChatRoomParams> chatRoomList = new ArrayList<>();
-        List<Post> posts = postRepository.findIdsByUser_UserId(userId);
-
+        List<Post> posts = postRepository.findByUser_UserId(userId);
+        log.info("post is "+posts.size());
         for (Post p : posts) {
             List<ChatRoom> roomlist = chatRoomRepository.findByPostId(p.getPostId());
 
+            log.info("chatroom is "+roomlist.size());
             for (ChatRoom c : roomlist) {
                 List<String> message = chatRepository.findByRoomSeq(c.getRandomId());
                 chatRoomList.add(ChatRoomParams.builder()

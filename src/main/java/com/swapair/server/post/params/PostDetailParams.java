@@ -32,6 +32,8 @@ public class PostDetailParams {
 
     private Boolean isChecked;
 
+    private Boolean isDoubted;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updateAt;

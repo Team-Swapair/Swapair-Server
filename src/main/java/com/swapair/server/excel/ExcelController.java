@@ -91,6 +91,11 @@ public class ExcelController {
 
             data.setCreatedAt(LocalDateTime.now());
 
+            if(row.getCell(10).getNumericCellValue() == 1)
+                data.setIsDoubted(true);
+            else
+                data.setIsDoubted(false);
+
             postService.createExcelPost(data);
         }
         System.out.println("엑셀 완료");
