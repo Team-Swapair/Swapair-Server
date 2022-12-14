@@ -43,4 +43,10 @@ public class PostController {
         return postService.createPost(postWriteParams2);
     }
 
+    @ApiOperation(value = "게시물 이미지 조회", notes = "모든 이미지를 조회한다.")
+    @GetMapping(value = "post/images")
+    public List<String> getImages(){
+        return postService.getAllImages();
+    }
+
 }

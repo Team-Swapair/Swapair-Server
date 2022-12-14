@@ -147,9 +147,11 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<Post> getMyPosts(Long userId) {
-        return null;
+    public List<String> getAllImages() {
+        return postRepository.findImages();
+
     }
+
 
     @Override
     public List<PostSearchParams> searchPosts(Long categoryId, String searchKey, Filter filter) {
