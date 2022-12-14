@@ -254,12 +254,13 @@ public class PostServiceImpl implements PostService{
         } else if (dateDifference == 2) {
             goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews3(goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getViews3() + 1);
         } else {
+            int views1 = goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getViews1();
             int views2 = goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getViews2();
             int views3 = goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getViews3();
 
-            goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews1(views2);
-            goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews2(views3);
-            goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews3(0);
+            goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews1(views1+views2);
+            goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews2(views2+views3);
+            goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews3(views3);
 
             goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setStorageReferenceDate(referenceDate.plusDays(1));
         }
