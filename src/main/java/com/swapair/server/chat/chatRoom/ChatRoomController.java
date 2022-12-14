@@ -1,5 +1,6 @@
 package com.swapair.server.chat.chatRoom;
 
+import com.swapair.server.chat.ChatMessage;
 import com.swapair.server.post.params.PostWriteParams2;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +28,13 @@ public class ChatRoomController {
 
     @ApiOperation(value = "채팅방 조회", notes = "유저ID당 채팅방을 조회한다..")
     @GetMapping(value = "chatroom/{userId}")
-    public List<ChatRoom> getUserCharRooms(@PathVariable("userId") Long userId){
+    public List<ChatRoomParams> getUserChatRooms(@PathVariable("userId") Long userId){
         return chatRoomService.getUserChatRooms(userId);
+    }
+
+    @ApiOperation(value = "채팅메세지 조회", notes = "채팅방 ID로 메세지를 조회한다.")
+    @GetMapping(value = "chatroom/message/{roomId}")
+    public List<ChatMessage> getChatMessages(@PathVariable("roomId") String roomId){
+        return chatRoomService.getChatMessages(roomId);
     }
 }

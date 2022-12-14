@@ -15,7 +15,7 @@ public interface PostService {
 
     PostDetailParams getPost(Long postId);
 
-    List<Post> getMyPosts(Long userId);
+    List<String> getAllImages();
 
     List<PostSearchParams> searchPosts(Long categoryId, String searchKey, Filter filter);
 

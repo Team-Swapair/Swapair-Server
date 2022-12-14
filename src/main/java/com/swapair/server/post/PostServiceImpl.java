@@ -51,6 +51,7 @@ public class PostServiceImpl implements PostService{
                         .createdAt(LocalDateTime.now())
                         .isChecked(true)
                         .isClosed(false)
+                .isDoubted(false)
                         .build();
         Long id = postRepository.save(post1).getPostId();
         List<Long> havaGoodsList = post.getHaveGoodsList();
@@ -120,6 +121,7 @@ public class PostServiceImpl implements PostService{
                 .isChecked(p.getIsChecked())
                 .createdAt(p.getCreatedAt())
                 .updateAt(p.getUpdateAt())
+                .isDoubted(p.getIsDoubted())
                 .build();
 
         List<GoodsParams> haveParamList = new ArrayList<>();
@@ -128,12 +130,14 @@ public class PostServiceImpl implements PostService{
             GoodsParams goodsParams = new GoodsParams();
             goodsParams.setGoodsId(hg.getGoods().getGoodsId());
             goodsParams.setGoodsName(hg.getGoods().getGoodsName());
+            goodsParams.setPrice(hg.getGoods().getGoodsPrice3());
             haveParamList.add(goodsParams);
         }
         for(WantGoods wg : p.getWantGoodsList()){
             GoodsParams goodsParams = new GoodsParams();
             goodsParams.setGoodsId(wg.getGoods().getGoodsId());
             goodsParams.setGoodsName(wg.getGoods().getGoodsName());
+            goodsParams.setPrice(wg.getGoods().getGoodsPrice3());
             wantGoodsList.add(goodsParams);
         }
         params.setHaveGoodsList(haveParamList);
@@ -143,9 +147,11 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<Post> getMyPosts(Long userId) {
-        return null;
+    public List<String> getAllImages() {
+        return postRepository.findImages();
+
     }
+
 
     @Override
     public List<PostSearchParams> searchPosts(Long categoryId, String searchKey, Filter filter) {

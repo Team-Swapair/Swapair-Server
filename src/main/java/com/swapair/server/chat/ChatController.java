@@ -18,11 +18,13 @@ import java.util.Set;
 public class ChatController {
     private static final Set<String> SESSION_IDS = new HashSet<>();
     private final SimpMessagingTemplate messagingTemplate;
+    private final ChatRepository chatRepository;
 
     @MessageMapping("/chat") // "/pub/chat"
     public void publishChat(ChatMessage chatMessage) {
         log.info("publishChat : {}", chatMessage);
 
+        chatRepository.save(chatMessage);
         messagingTemplate.convertAndSend("/sub/chat/" + chatMessage.getRoomSeq(), chatMessage);
     }
 
