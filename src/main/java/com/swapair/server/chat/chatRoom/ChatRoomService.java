@@ -1,5 +1,6 @@
 package com.swapair.server.chat.chatRoom;
 
+import com.swapair.server.chat.ChatMessage;
 import com.swapair.server.chat.ChatRepository;
 import com.swapair.server.post.Post;
 import com.swapair.server.post.PostRepository;
@@ -42,19 +43,29 @@ public class ChatRoomService {
 
             log.info("chatroom is "+roomlist.size());
             for (ChatRoom c : roomlist) {
-                List<String> message = chatRepository.findByRoomSeq(c.getRandomId());
-                chatRoomList.add(ChatRoomParams.builder()
+                List<ChatMessage> message = chatRepository.findByRoomSeq(c.getRandomId());
+                ChatRoomParams param =  ChatRoomParams.builder()
                         .chatRoomId(c.getChatRoomId())
                         .randomId(c.getRandomId())
                         .postId(p.getPostId())
                         .haveImage(p.getHaveImage())
-                                .message(message.get(0))
-                        .postTitle(p.getPostTitle()).build());
+                        .postTitle(p.getPostTitle()).build();
+
+                if (!message.isEmpty()) {
+                    param.setMessage(message.get(0).getMessage());
+                }
+
+                chatRoomList.add(param);
             }
         }
 
 
         return chatRoomList;
 
+    }
+
+    public List<ChatMessage> getChatMessages(String roomId) {
+
+       return chatRepository.findByRoomSeq(roomId);
     }
 }

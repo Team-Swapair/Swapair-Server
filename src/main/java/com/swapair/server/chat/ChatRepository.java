@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
 
-    List<String> findByRoomSeq(@Param("roomId") String roomId);
+    List<ChatMessage> findByRoomSeq(@Param("roomId") String roomId);
 }
