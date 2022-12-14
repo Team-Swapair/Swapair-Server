@@ -1,5 +1,6 @@
 package com.swapair.server.post.have;
 
+import com.swapair.server.goods.Goods;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,5 +12,8 @@ import java.util.List;
 public interface HaveGoodsRepository extends JpaRepository<HaveGoods, Long> {
 
     @Query(value = "SELECT distinct h.post.postId FROM HaveGoods h WHERE h.goods.goodsId IN (:goodsIds) ")
-    List<Long> findByGoodsIds(@Param("goodsIds")List<Long> goodsIds);
+    List<Long> findByGoodsIds(@Param("goodsIds") List<Long> goodsIds);
+
+    List<Long> findByGoods(Goods goods);
+    List<Long> findByGoodsAndPost_IsDoubted(Goods goods, Boolean isDoubted);
 }
