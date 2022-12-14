@@ -43,7 +43,10 @@ public class PostController {
         return postService.createPost(postWriteParams2);
     }
 
-    @ApiOperation(value = "임시 api", notes = "캡챠용 임시")
-    @GetMapping(value = "tmps")
-    public boolean getCaptcha(){ return true; }
+    @ApiOperation(value = "게시물 이미지 조회", notes = "모든 이미지를 조회한다.")
+    @GetMapping(value = "post/images")
+    public List<String> getImages(){
+        return postService.getAllImages();
+    }
+
 }

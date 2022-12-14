@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
+    @Query("select p from Post p where p.user.userId = :userId")
     List<Post> findByUser_UserId(@Param("userId") Long userId);
 
     @Query("select p from Post p where p.postId in (:postIds) and p.postCategory.categoryId in (:categories)")
@@ -16,5 +17,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p where p.postId in (:postIds)")
     List<Post> findInIds(@Param("postIds")List<Long> postIds);
+
+    @Query("select p.haveImage from Post p")
+    List<String> findImages();
 
 }

@@ -219,6 +219,7 @@ public class PostServiceImpl implements PostService{
                 .isChecked(p.getIsChecked())
                 .createdAt(p.getCreatedAt())
                 .updateAt(p.getUpdateAt())
+                .isDoubted(p.getIsDoubted())
                 .build();
 
         List<GoodsParams> haveParamList = new ArrayList<>();
@@ -265,9 +266,11 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<Post> getMyPosts(Long userId) {
-        return null;
+    public List<String> getAllImages() {
+        return postRepository.findImages();
+
     }
+
 
     @Override
     public List<PostSearchParams> searchPosts(Long categoryId, String searchKey, Filter filter) {
