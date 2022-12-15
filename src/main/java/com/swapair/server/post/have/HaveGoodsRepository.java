@@ -15,5 +15,7 @@ public interface HaveGoodsRepository extends JpaRepository<HaveGoods, Long> {
     List<Long> findByGoodsIds(@Param("goodsIds") List<Long> goodsIds);
 
     List<Long> findByGoods(Goods goods);
-    List<Long> findByGoodsAndPost_IsDoubted(Goods goods, Boolean isDoubted);
+
+    @Query(value = "SELECT h.haveId FROM HaveGoods h WHERE h.post.isDoubted =false and h.goods.goodsId = (:goodsId)")
+    List<Long> findByGoodsIdAndIsDoubtedFalse(Long goodsId);
 }

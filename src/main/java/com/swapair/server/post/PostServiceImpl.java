@@ -50,6 +50,7 @@ public class PostServiceImpl implements PostService{
                 .user(userRepository.findByUserId(post.getUserId()))
                 .createdAt(LocalDateTime.now())
                 .isChecked(true)
+                .isDoubted(false)
                 .isClosed(false)
                 .build();
 
@@ -62,7 +63,7 @@ public class PostServiceImpl implements PostService{
             haveGoodsRepository.save(hg);
 
             LocalDateTime referenceDate = goodsRepository.findById(l).orElseThrow(IllegalAccessError::new).getStorageReferenceDate();
-            int dateDifference = referenceDate.compareTo(LocalDateTime.now());
+            int dateDifference = LocalDateTime.now().compareTo(referenceDate);
 
             if (dateDifference == 0) {
                 calculateGoodsPrice1(l);
@@ -81,7 +82,7 @@ public class PostServiceImpl implements PostService{
             wantGoodsRepository.save(wg);
 
             LocalDateTime referenceDate = goodsRepository.findById(l).orElseThrow(IllegalAccessError::new).getStorageReferenceDate();
-            int dateDifference = referenceDate.compareTo(LocalDateTime.now());
+            int dateDifference = LocalDateTime.now().compareTo(referenceDate);
 
             if (dateDifference == 0) {
                 calculateGoodsPrice1(l);
@@ -90,8 +91,8 @@ public class PostServiceImpl implements PostService{
             } else if (dateDifference == 2) {
                 calculateGoodsPrice3(l);
 
-                List<Long> haveGoods = haveGoodsRepository.findByGoodsAndPost_IsDoubted(goodsRepository.findById(l).orElseThrow(IllegalAccessError::new), false);
-                List<Long> wantGoods = wantGoodsRepository.findByGoodsAndPost_IsDoubted(goodsRepository.findById(l).orElseThrow(IllegalAccessError::new), false);
+                List<Long> haveGoods = haveGoodsRepository.findByGoodsIdAndIsDoubtedFalse(l);
+                List<Long> wantGoods = wantGoodsRepository.findByGoodsIdAndIsDoubtedFalse(l);
 
                 if (wantGoods.size() / haveGoods.size() >= 2) {
                     // wantGoods의 게시글의 조회수 체크
@@ -126,8 +127,8 @@ public class PostServiceImpl implements PostService{
     }
 
     public void calculateGoodsPrice1(Long goodsId) {
-        List<Long> haveGoods = haveGoodsRepository.findByGoodsAndPost_IsDoubted(goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new), false);
-        List<Long> wantGoods = wantGoodsRepository.findByGoodsAndPost_IsDoubted(goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new), false);
+        List<Long> haveGoods = haveGoodsRepository.findByGoodsIdAndIsDoubtedFalse(goodsId);
+        List<Long> wantGoods = wantGoodsRepository.findByGoodsIdAndIsDoubtedFalse(goodsId);
 
         Long price = goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getGoodsPrice1();
 
@@ -135,8 +136,9 @@ public class PostServiceImpl implements PostService{
     }
 
     public void calculateGoodsPrice2(Long goodsId) {
-        List<Long> haveGoods = haveGoodsRepository.findByGoodsAndPost_IsDoubted(goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new), false);
-        List<Long> wantGoods = wantGoodsRepository.findByGoodsAndPost_IsDoubted(goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new), false);
+        List<Long> haveGoods = haveGoodsRepository.findByGoodsIdAndIsDoubtedFalse(goodsId);
+        ;
+        List<Long> wantGoods = wantGoodsRepository.findByGoodsIdAndIsDoubtedFalse(goodsId);
 
         Long price = goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getGoodsPrice2();
 
@@ -144,8 +146,8 @@ public class PostServiceImpl implements PostService{
     }
 
     public void calculateGoodsPrice3(Long goodsId) {
-        List<Long> haveGoods = haveGoodsRepository.findByGoodsAndPost_IsDoubted(goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new), false);
-        List<Long> wantGoods = wantGoodsRepository.findByGoodsAndPost_IsDoubted(goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new), false);
+        List<Long> haveGoods = haveGoodsRepository.findByGoodsIdAndIsDoubtedFalse(goodsId);
+        List<Long> wantGoods = wantGoodsRepository.findByGoodsIdAndIsDoubtedFalse(goodsId);
 
         Long price = goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getGoodsPrice3();
 
@@ -224,11 +226,22 @@ public class PostServiceImpl implements PostService{
 
         List<GoodsParams> haveParamList = new ArrayList<>();
         List<GoodsParams> wantGoodsList = new ArrayList<>();
+
         for (HaveGoods hg : p.getHaveGoodsList()) {
+            GoodsParams goodsParams = new GoodsParams();
+            goodsParams.setGoodsId(hg.getGoods().getGoodsId());
+            goodsParams.setGoodsName(hg.getGoods().getGoodsName());
+            goodsParams.setPrice(hg.getGoods().getGoodsPrice3());
+            haveParamList.add(goodsParams);
             addGoodsView(haveParamList, hg.getGoods());
         }
         for (WantGoods wg : p.getWantGoodsList()) {
-            addGoodsView(haveParamList, wg.getGoods());
+            GoodsParams goodsParams = new GoodsParams();
+            goodsParams.setGoodsId(wg.getGoods().getGoodsId());
+            goodsParams.setGoodsName(wg.getGoods().getGoodsName());
+            goodsParams.setPrice(wg.getGoods().getGoodsPrice3());
+            wantGoodsList.add(goodsParams);
+            addGoodsView(wantGoodsList, wg.getGoods());
         }
         params.setHaveGoodsList(haveParamList);
         params.setWantGoodsList(wantGoodsList);
@@ -239,13 +252,8 @@ public class PostServiceImpl implements PostService{
     private void addGoodsView(List<GoodsParams> haveParamList, Goods goods) {
         Long goodsId = goods.getGoodsId();
 
-        GoodsParams goodsParams = new GoodsParams();
-        goodsParams.setGoodsId(goodsId);
-        goodsParams.setGoodsName(goods.getGoodsName());
-        haveParamList.add(goodsParams);
-
         LocalDateTime referenceDate = goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getStorageReferenceDate();
-        int dateDifference = referenceDate.compareTo(LocalDateTime.now());
+        int dateDifference = LocalDateTime.now().compareTo(referenceDate);
 
         if (dateDifference == 0) {
             goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews1(goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).getViews1() + 1);
@@ -261,7 +269,6 @@ public class PostServiceImpl implements PostService{
             goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews1(views1+views2);
             goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews2(views2+views3);
             goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setViews3(views3);
-
             goodsRepository.findById(goodsId).orElseThrow(IllegalAccessError::new).setStorageReferenceDate(referenceDate.plusDays(1));
         }
     }
@@ -282,7 +289,6 @@ public class PostServiceImpl implements PostService{
         } else {
             goodsIds = goodsRepository.findAllIds();
         }
-//        System.out.println("goodsId length is "+ goodsIds.size());
 
         List<Long> postIds = new ArrayList<>();
         if(filter.equals(Filter.HAVE)){
@@ -300,8 +306,6 @@ public class PostServiceImpl implements PostService{
             }
 
         }
-
-//        System.out.println("postId length is "+ postIds.size());
 
         List<Long> categoryIds = new ArrayList<>();
         List<Post> postList = new ArrayList<>();
