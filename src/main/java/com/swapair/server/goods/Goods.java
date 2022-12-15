@@ -51,6 +51,15 @@ public class Goods {
     @Column(nullable = false)
     private Long goodsPrice3;
 
+    @Column(nullable = false)
+    private int views1;
+
+    @Column(nullable = false)
+    private int views2;
+
+    @Column(nullable = false)
+    private int views3;
+
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
